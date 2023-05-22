@@ -22,8 +22,8 @@ class DrivingStereoDataset(MonoDataset):
         # by 1 / image_height. Monodepth2 assumes a principal point to be exactly centered.
         # If your principal point is far from the center you might need to disable the horizontal
         # flip augmentation.
-        self.K = np.array([[0.58, 0, 0.5, 0],
-                           [0, 1.92, 0.5, 0],
+        self.K = np.array([[2.34, 0, 0.5, 0],
+                           [0, 5.15, 0.5, 0],
                            [0, 0, 1, 0],
                            [0, 0, 0, 1]], dtype=np.float32) #ei tietoa parametreista
 
