@@ -139,7 +139,7 @@ class MonoDataset(data.Dataset):
 
         do_color_aug = self.is_train and random.random() > 0.5
         do_flip = self.is_train and random.random() > 0.5
-
+        
         line = self.filenames[index].split()
         folder = line[0]
 
@@ -157,6 +157,10 @@ class MonoDataset(data.Dataset):
             if i == "s":
                 other_side = {"r": "l", "l": "r"}[side]
                 inputs[("color", i, -1)] = self.get_color(folder, frame_index, other_side, do_flip)
+#----------------------------------------------------------------------------------------------------------------
+                self.get_Cut_Flip(Image) #image should be changed to the frames
+#----------------------------------------------------------------------------------------------------------------
+
             else:
                 inputs[("color", i, -1)] = self.get_color(folder, frame_index + i, side, do_flip)
 
@@ -198,6 +202,11 @@ class MonoDataset(data.Dataset):
             inputs["stereo_T"] = torch.from_numpy(stereo_T)
 
         return inputs
+#----------------------------------------------------------------------------------------------------------------
+    #image should be changed to similar things as the following functions
+    def get_Cut_Flip(self, image):
+        raise NotImplementedError
+#----------------------------------------------------------------------------------------------------------------
 
     def get_color(self, folder, frame_index, side, do_flip):
         raise NotImplementedError
