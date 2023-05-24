@@ -77,8 +77,8 @@ class KITTIDataset(MonoDataset):
         for i in range(len(h_list)-1):
             h_interval_list.append(h_list[i+1]-h_list[i])
         for i in range(N):
-            image_copy[h_list[i]:h_list[i+1], :, :] = image[h_list_inv[i]-h_interval_list[i]:h_list_inv[i], :, :]
-            #image_copy.crop((0, h_list[i], w, h_list[i+1])).paste(image.crop((0, h_list_inv[i]-h_interval_list[i], w, h_list_inv[i])))
+            #image_copy[h_list[i]:h_list[i+1], :, :] = image[h_list_inv[i]-h_interval_list[i]:h_list_inv[i], :, :]
+            image_copy.crop((0, h_list[i], w, h_list[i+1])).paste(image.crop((0, h_list_inv[i]-h_interval_list[i], w, h_list_inv[i])))
 
         return image_copy    
 #----------------------------------------------------------------------------------------------------------------
