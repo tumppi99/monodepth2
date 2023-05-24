@@ -7,7 +7,7 @@ import skimage.transform
 import numpy as np
 import PIL.Image as pil
 
-from kitti_utils import generate_depth_map #drivingstereo_utils ?
+#from kitti_utils import generate_depth_map    depth mappii ei ainakaa tartte     drivingstereo_utils ?
 from .mono_dataset import MonoDataset
 
 
@@ -29,7 +29,20 @@ class DrivingStereoDataset(MonoDataset):
 
         self.full_res_shape = (881, 400)
         self.side_map = {"2": 2, "3": 3, "l": 2, "r": 3} #tarviiko?
+    
 
+    def get_depth(self, folder, frame_index, side, do_flip):
+        # Implement this method to load a depth map from file
+        pass
+
+    def get_color(self, folder, frame_index, side, do_flip):
+        color = self.loader(self.get_image_path(folder, frame_index, side))
+
+        if do_flip:
+            color = color.transpose(pil.FLIP_LEFT_RIGHT)
+
+        return color
+    
     def check_depth(self):
         line = self.filenames[0].split()
         scene_name = line[0]
@@ -42,14 +55,10 @@ class DrivingStereoDataset(MonoDataset):
 
         return os.path.isfile(velo_filename)
 
-    def get_color(self, folder, frame_index, side, do_flip):
-        color = self.loader(self.get_image_path(folder, frame_index, side))
 
-        if do_flip:
-            color = color.transpose(pil.FLIP_LEFT_RIGHT)
 
-        return color
-    
+
+
 
 '''
 Chat GPT vinkkejä
