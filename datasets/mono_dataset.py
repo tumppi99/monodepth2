@@ -56,11 +56,13 @@ class MonoDataset(data.Dataset):
         self.num_scales = num_scales
         self.interp = Image.ANTIALIAS
 
+        # default [0, -1, 1]
         self.frame_idxs = frame_idxs
 
         self.is_train = is_train
         self.img_ext = img_ext
 
+        # PIL image loader
         self.loader = pil_loader
         self.to_tensor = transforms.ToTensor()
 
@@ -71,6 +73,7 @@ class MonoDataset(data.Dataset):
             self.contrast = (0.8, 1.2)
             self.saturation = (0.8, 1.2)
             self.hue = (-0.1, 0.1)
+            # ColotJitter .get_params kanssa tai ilman
             transforms.ColorJitter(
                 self.brightness, self.contrast, self.saturation, self.hue)
         except TypeError:
@@ -85,7 +88,7 @@ class MonoDataset(data.Dataset):
             self.resize[i] = transforms.Resize((self.height // s, self.width // s),
                                                interpolation=self.interp)
 
-        self.load_depth = self.check_depth()
+        #self.load_depth = self.check_depth()   ei ehkä tarvita
 
     def preprocess(self, inputs, color_aug):
         """Resize colour images to the required scales and augment if required
@@ -149,7 +152,7 @@ class MonoDataset(data.Dataset):
             frame_index = 0
 
         if len(line) == 3:
-            side = line[2]
+            side = line[2]  # r or l, voi vaatia muokkausta
         else:
             side = None
 
@@ -173,10 +176,12 @@ class MonoDataset(data.Dataset):
 
             inv_K = np.linalg.pinv(K)
 
+            # add intrinsics to inputs
             inputs[("K", scale)] = torch.from_numpy(K)
             inputs[("inv_K", scale)] = torch.from_numpy(inv_K)
 
         if do_color_aug:
+            # ColotJitter .get_params kanssa tai ilman
             color_aug = transforms.ColorJitter(
                 self.brightness, self.contrast, self.saturation, self.hue)
         else:
