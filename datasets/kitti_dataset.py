@@ -16,6 +16,10 @@ import copy
 from kitti_utils import generate_depth_map
 from .mono_dataset import MonoDataset
 
+import matplotlib.pyplot as plt
+
+from PIL import Image
+
 
 class KITTIDataset(MonoDataset):
     """Superclass for different types of KITTI dataset loaders
@@ -56,13 +60,15 @@ class KITTIDataset(MonoDataset):
 
         return color
 #----------------------------------------------------------------------------------------------------------------
-
+    '''
     def get_Cut_Flip(image):
+        
         p = random.random()
         if p < 0.5:
             return image
+        
         image_copy = copy.deepcopy(image)
-        w, h = image_copy.size
+        h, w = image_copy.size
         c = 3
 
         N = 2     
@@ -77,10 +83,41 @@ class KITTIDataset(MonoDataset):
         for i in range(len(h_list)-1):
             h_interval_list.append(h_list[i+1]-h_list[i])
         for i in range(N):
-            #image_copy[h_list[i]:h_list[i+1], :, :] = image[h_list_inv[i]-h_interval_list[i]:h_list_inv[i], :, :]
-            image_copy.crop((0, h_list[i], w, h_list[i+1])).paste(image.crop((0, h_list_inv[i]-h_interval_list[i], w, h_list_inv[i])))
+            image_copy[h_list[i]:h_list[i+1], :, :] = image[h_list_inv[i]-h_interval_list[i]:h_list_inv[i], :, :]
+            #image_copy.crop((0, h_list[i], w, h_list[i+1])).paste(image.crop((0, h_list_inv[i]-h_interval_list[i], w, h_list_inv[i])))
 
-        return image_copy    
+        
+        plt.figure(figsize=(10, 10))
+        #plt.subplot(311)
+        plt.imshow(image_copy)
+        plt.title("Input", fontsize=22)
+        plt.axis('off')
+        
+
+        return image_copy
+    '''
+
+    def get_Cut_Flip(image):
+        p = np.random.random()
+        if p < 0.5:
+            return image
+
+        image_copy = image.copy()
+        image_array = np.array(image_copy)
+
+        h, w, c = image_array.shape
+
+        h_cut = np.random.randint(int(0.2 * h), int(0.8 * h))
+
+        upper_part = image_array[:h_cut, :, :]
+        lower_part = image_array[h_cut:, :, :]
+
+        flipped_image_array = np.concatenate((lower_part, upper_part), axis=0)
+
+        flipped_image = Image.fromarray(flipped_image_array)
+        return flipped_image
+
+
 #----------------------------------------------------------------------------------------------------------------
 
 

@@ -1,9 +1,13 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from PIL import Image
+import PIL.Image as pil
 import random
 import copy
 
+from datasets.kitti_dataset import KITTIDataset
+
+
+'''
 def Cut_Flip(image):
     p = random.random()
     if p < 0.5:
@@ -26,13 +30,17 @@ def Cut_Flip(image):
         image_copy[h_list[i]:h_list[i+1], :, :] = image[h_list_inv[i]-h_interval_list[i]:h_list_inv[i], :, :]
 
     return image_copy
+'''
+
+
 
 # Load the image
 image_path = 'assets/test_image.jpg'
-image = np.array(Image.open(image_path))
+#image = np.array(Image.open(image_path))
+image = pil.open(image_path).convert('RGB')
 
 # Apply the Cut_Flip function
-augmented_image = Cut_Flip(image.copy())  # use .copy() to make a copy of the original array
+augmented_image = KITTIDataset.get_Cut_Flip(image)  # use .copy() to make a copy of the original array
 
 # Plot the original and augmented images
 fig, ax = plt.subplots(1, 2, figsize=(10, 5))
