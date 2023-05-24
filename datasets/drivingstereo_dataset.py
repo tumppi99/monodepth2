@@ -55,8 +55,6 @@ class DrivingStereoDataset(MonoDataset):
             "velodyne_points/data/{:010d}.bin".format(int(frame_index)))
 
         return os.path.isfile(velo_filename)
-
-        return color
     
     def get_Cut_Flip(image):
         p = np.random.random()
