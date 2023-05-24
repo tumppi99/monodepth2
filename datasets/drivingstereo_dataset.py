@@ -6,10 +6,11 @@ import os
 import skimage.transform
 import numpy as np
 import PIL.Image as pil
+import random
+import copy
 
 from kitti_utils import generate_depth_map #drivingstereo_utils ?
 from .mono_dataset import MonoDataset
-
 
 class DrivingStereoDataset(MonoDataset):
     """Superclass for different types of KITTI dataset loaders
@@ -49,6 +50,26 @@ class DrivingStereoDataset(MonoDataset):
             color = color.transpose(pil.FLIP_LEFT_RIGHT)
 
         return color
+    
+    def get_Cut_Flip(image):
+        p = np.random.random()
+        if p < 0.5:
+            return image
+
+        image_copy = image.copy()
+        image_array = np.array(image_copy)
+
+        h, w, c = image_array.shape
+
+        h_cut = np.random.randint(int(0.2 * h), int(0.8 * h))
+
+        upper_part = image_array[:h_cut, :, :]
+        lower_part = image_array[h_cut:, :, :]
+
+        flipped_image_array = np.concatenate((lower_part, upper_part), axis=0)
+
+        flipped_image = pil.fromarray(flipped_image_array)
+        return flipped_image
     
 
 '''
@@ -101,32 +122,4 @@ class DrivingStereoDataset(MonoDataset):
             color = color.transpose(pil.FLIP_LEFT_RIGHT)
 
         return color
-'''
-
-'''
-def Cut_Flip(self, image, depth):
-
-        p = random.random()
-        if p < 0.5:
-            return image, depth
-        image_copy = copy.deepcopy(image)
-        depth_copy = copy.deepcopy(depth)
-        h, w, c = image.shape
-
-        N = 2     
-        h_list = []
-        h_interval_list = []   # hight interval
-        for i in range(N-1):
-            h_list.append(random.randint(int(0.2*h), int(0.8*h)))
-        h_list.append(h)
-        h_list.append(0)  
-        h_list.sort()
-        h_list_inv = np.array([h]*(N+1))-np.array(h_list)
-        for i in range(len(h_list)-1):
-            h_interval_list.append(h_list[i+1]-h_list[i])
-        for i in range(N):
-            image[h_list[i]:h_list[i+1], :, :] = image_copy[h_list_inv[i]-h_interval_list[i]:h_list_inv[i], :, :]
-            depth[h_list[i]:h_list[i+1], :, :] = depth_copy[h_list_inv[i]-h_interval_list[i]:h_list_inv[i], :, :]
-
-        return image, depth
 '''
