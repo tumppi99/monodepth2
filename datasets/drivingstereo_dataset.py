@@ -30,7 +30,15 @@ class DrivingStereoDataset(MonoDataset):
 
         self.full_res_shape = (881, 400)
         self.side_map = {"2": 2, "3": 3, "l": 2, "r": 3} #tarviiko?
-    
+
+        '''
+        # Camera intrinsics
+        # 15mm images have different focals
+        self.c_u = 4.556890e+2
+        self.c_v = 1.976634e+2
+        self.f_u = 1.003556e+3
+        self.f_v = 1.003556e+3
+        '''
 
     def get_depth(self, folder, frame_index, side, do_flip):
         # Implement this method to load a depth map from file

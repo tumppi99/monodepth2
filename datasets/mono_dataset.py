@@ -23,7 +23,24 @@ def pil_loader(path):
     with open(path, 'rb') as f:
         with Image.open(f) as img:
             return img.convert('RGB')
+        
+'''
+def load_path(self, list_filename):
+    lines = read_all_lines(list_filename)
+    splits = [line.split() for line in lines]
+    left_images = [x[0] for x in splits]
+    right_images = [x[1] for x in splits]
+    if len(splits[0]) == 2:  # ground truth not available
+        return left_images, right_images, None
+    else:
+        disp_images = [x[2] for x in splits]
+        return left_images, right_images, disp_images
 
+def load_disp(self, filename):
+    data = Image.open(filename)
+    data = np.array(data, dtype=np.float32) / 256.
+    return data
+'''
 
 class MonoDataset(data.Dataset):
     """Superclass for monocular dataloaders
@@ -138,6 +155,19 @@ class MonoDataset(data.Dataset):
             2       images resized to (self.width // 4, self.height // 4)
             3       images resized to (self.width // 8, self.height // 8)
         """
+
+        '''
+        left_img = self.load_image(os.path.join(
+            self.datapath, self.left_filenames[index]))
+        right_img = self.load_image(os.path.join(
+            self.datapath, self.right_filenames[index]))
+        disparity = self.load_disp(os.path.join(
+            self.datapath, self.disp_filenames[index]))
+
+        w, h = left_img.size
+        crop_w, crop_h = 880, 400
+        '''
+
         inputs = {}
 
         do_color_aug = self.is_train and random.random() > 0.5
