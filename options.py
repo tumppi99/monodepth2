@@ -21,6 +21,7 @@ class MonodepthOptions:
                                  type=str,
                                  help="path to the training data",
                                  default=os.path.join(file_dir, "kitti_data"))
+        # vastaava DrivingStereolle vai korvaus ???
         self.parser.add_argument("--log_dir",
                                  type=str,
                                  help="log directory",
@@ -46,6 +47,7 @@ class MonodepthOptions:
                                  help="dataset to train on",
                                  default="kitti",
                                  choices=["kitti", "kitti_odom", "kitti_depth", "kitti_test"])
+        # vastaava DrivingStereolle vai korvaus ???
         self.parser.add_argument("--png",
                                  help="if set, trains from raw KITTI png files (instead of jpgs)",
                                  action="store_true")
