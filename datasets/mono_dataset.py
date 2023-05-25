@@ -174,6 +174,8 @@ class MonoDataset(data.Dataset):
         do_flip = self.is_train and random.random() > 0.5
         
         line = self.filenames[index].split()
+        
+        # ex: 2011_09_26/2011_09_26_drive_0022_sync
         folder = line[0]
 
         if len(line) == 3:
@@ -251,3 +253,44 @@ class MonoDataset(data.Dataset):
 
     def get_depth(self, folder, frame_index, side, do_flip):
         raise NotImplementedError
+    
+    '''
+    Jos halutaan päivittää matriisin arvoja...
+
+    def load_intrinsics(self, token):
+        """Returns a 4x4 camera intrinsics matrix corresponding to the token
+        """
+        # 3x3 camera matrix
+        K = self.nusc_proc.get_cam_intrinsics(token)
+        K = np.concatenate( (K, np.array([[0,0,0]]).T), axis = 1 )
+        K = np.concatenate( (K, np.array([[0,0,0,1]])), axis = 0 )
+        return np.float32(K)
+
+    def adjust_intrinsics(self, cam_intrinsics_mat, inputs, ratio, delta_u, delta_v, do_flip):
+        """Adjust intrinsics to match each scale and store to inputs"""
+
+
+        for scale in range(self.num_scales):
+            
+            K = cam_intrinsics_mat.copy()
+
+            # adjust K for the resizing within the get_color function
+            K[0, :] *= ratio
+            K[1, :] *= ratio
+            K[0,2] -= delta_u
+            K[1,2] -= delta_v
+
+            # Modify the intrinsic matrix if the image is flipped
+            if do_flip:
+                K[0,2] = self.width - K[0,2]
+            
+            # adjust K for images of different scales
+            K[0, :] /= (2 ** scale)
+            K[1, :] /= (2 ** scale)
+
+            inv_K = np.linalg.pinv(K)
+
+            # add intrinsics to inputs
+            inputs[("K", scale)] = torch.from_numpy(K)
+            inputs[("inv_K", scale)] = torch.from_numpy(inv_K)
+    '''
