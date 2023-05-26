@@ -1,4 +1,6 @@
 import numpy as np
+#import matplotlib
+#matplotlib.use('agg')
 import matplotlib.pyplot as plt
 import PIL.Image as pil
 import random
@@ -7,7 +9,7 @@ import copy
 from datasets.drivingstereo_dataset import DrivingStereoDataset
 
 # Load the image
-image_path = 'assets/test_image.jpg'
+image_path = 'monodepth2/assets/test_image.jpg'
 #image = np.array(Image.open(image_path))
 image = pil.open(image_path).convert('RGB')
 
@@ -22,5 +24,12 @@ ax[0].set_title('Original Image')
 
 ax[1].imshow(augmented_image)
 ax[1].set_title('Augmented Image')
+
+# Save the original and augmented images
+original_image_path = 'monodepth2/assets/original_image.jpg'
+augmented_image_path = 'monodepth2/assets/augmented_image.jpg'
+
+image.save(original_image_path)
+augmented_image.save(augmented_image_path)
 
 plt.show()
