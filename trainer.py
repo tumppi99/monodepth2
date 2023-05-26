@@ -116,6 +116,8 @@ class Trainer:
                          "DrivingStereo": datasets.DrivingStereoDataset}
         self.dataset = datasets_dict[self.opt.dataset]
 
+        # lisää parametrien määrittelyä ??
+
         fpath = os.path.join(os.path.dirname(__file__), "splits", self.opt.split, "{}_files.txt")
 
         train_filenames = readlines(fpath.format("train"))

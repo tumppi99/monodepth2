@@ -46,19 +46,18 @@ class MonodepthOptions:
                                  type=str,
                                  help="dataset to train on",
                                  default="kitti",
-                                 choices=["kitti", "kitti_odom", "kitti_depth", "kitti_test"])
-        # vastaava DrivingStereolle vai korvaus ???
+                                 choices=["kitti", "kitti_odom", "kitti_depth", "kitti_test", "DrivingStereo"])
         self.parser.add_argument("--png",
                                  help="if set, trains from raw KITTI png files (instead of jpgs)",
                                  action="store_true")
         self.parser.add_argument("--height",
                                  type=int,
                                  help="input image height",
-                                 default=192)
+                                 default=400)
         self.parser.add_argument("--width",
                                  type=int,
                                  help="input image width",
-                                 default=640)
+                                 default=881)
         self.parser.add_argument("--disparity_smoothness",
                                  type=float,
                                  help="disparity smoothness weight",
@@ -207,4 +206,16 @@ class MonodepthOptions:
 
     def parse(self):
         self.options = self.parser.parse_args()
+
+        '''
+        Otettu nuscenes_cityscapes
+
+        self.options.file_dir = file_dir
+        self.options.data_path = os.path.abspath(
+                os.path.expanduser(self.options.data_path)
+                )
+        if not os.path.exists(self.options.log_dir):
+            os.mkdir(self.options.log_dir)
+        '''
+
         return self.options
