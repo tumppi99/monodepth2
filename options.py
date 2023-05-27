@@ -21,7 +21,6 @@ class MonodepthOptions:
                                  type=str,
                                  help="path to the training data",
                                  default=os.path.join("/work/scitas-share/datasets/Vita/civil-459/DrivingStereo/train/train-left-image"))
-        # vastaava DrivingStereolle vai korvaus ???
         self.parser.add_argument("--log_dir",
                                  type=str,
                                  help="log directory",
@@ -45,7 +44,7 @@ class MonodepthOptions:
         self.parser.add_argument("--dataset",
                                  type=str,
                                  help="dataset to train on",
-                                 default="kitti",
+                                 default="DrivingStereo",
                                  choices=["kitti", "kitti_odom", "kitti_depth", "kitti_test", "DrivingStereo"])
         self.parser.add_argument("--png",
                                  help="if set, trains from raw KITTI png files (instead of jpgs)",
