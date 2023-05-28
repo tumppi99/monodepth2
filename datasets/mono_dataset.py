@@ -191,13 +191,13 @@ class MonoDataset(data.Dataset):
         for i in self.frame_idxs:
             if i == "s":
                 other_side = {"r": "l", "l": "r"}[side]
-                inputs[("color", i, -1)] = self.get_color(folder, frame_index, other_side, do_flip)
+                inputs[("color", i, -1)] = self.get_color(folder, frame_index, do_flip)
 #----------------------------------------------------------------------------------------------------------------
                 self.get_Cut_Flip(Image) #image should be changed to the frames
 #----------------------------------------------------------------------------------------------------------------
 
             else:
-                inputs[("color", i, -1)] = self.get_color(folder, frame_index + i, side, do_flip)
+                inputs[("color", i, -1)] = self.get_color(folder, frame_index + i, do_flip)
 
         # adjusting intrinsics to match each scale in the pyramid
         for scale in range(self.num_scales):

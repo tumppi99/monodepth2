@@ -44,8 +44,8 @@ class DrivingStereoDataset(MonoDataset):
         # Implement this method to load a depth map from file
         pass
 
-    def get_color(self, folder, frame_index, side, do_flip):
-        color = self.loader(self.get_image_path(folder, frame_index, side))
+    def get_color(self, folder, frame_index, do_flip):
+        color = self.loader(self.get_image_path(folder, frame_index))
 
         if do_flip:
             color = color.transpose(pil.FLIP_LEFT_RIGHT)
