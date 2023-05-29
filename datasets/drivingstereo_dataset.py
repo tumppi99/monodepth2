@@ -40,6 +40,18 @@ class DrivingStereoDataset(MonoDataset):
         self.f_v = 1.003556e+3
         '''
 
+    def get_image_path(self, folder, frame_index):
+        with open(os.path.join(self.data_path, folder), 'r') as f:
+            lines = f.readlines()
+            if frame_index <= len(lines):
+                filename = lines[frame_index - 1].strip()  # subtract 1 because frame_index starts from 1 and list indices start from 0
+                image_path = os.path.join(self.data_path, 'DrivingStereo', 'train', 'train-left-image', filename)
+                return image_path
+            else:
+                print("Frame index out of range")
+                return None
+
+
     def get_depth(self, folder, frame_index, side, do_flip):
         # Implement this method to load a depth map from file
         pass
