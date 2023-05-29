@@ -20,7 +20,7 @@ class MonodepthOptions:
         self.parser.add_argument("--data_path",
                                  type=str,
                                  help="path to the training data",
-                                 default=os.path.join("/work/scitas-share/datasets/Vita/civil-459/DrivingStereo/train/train-left-image"))
+                                 default=os.path.join("/work/scitas-share/datasets/Vita/civil-459/DrivingStereo/train"))
         self.parser.add_argument("--log_dir",
                                  type=str,
                                  help="log directory",
