@@ -28,7 +28,7 @@ class DrivingStereoDataset(MonoDataset):
                            [0, 0, 1, 0],
                            [0, 0, 0, 1]], dtype=np.float32) #ei tietoa parametreista
 
-        self.full_res_shape = (881, 400)
+        self.full_res_shape = (864, 384)
         self.side_map = {"2": 2, "3": 3, "l": 2, "r": 3} #tarviiko?
 
         '''
@@ -41,18 +41,22 @@ class DrivingStereoDataset(MonoDataset):
         '''
     
     def get_image_path(self, folder):
-        image_path = os.path.join(self.data_path, 'train-left-image', folder)
+        image_path = os.path.join(self.data_path, 'train-left-image', folder + '.jpg')
         with open('/home/herlevi/monodepth2/debugs/debug_get_image_path.txt', 'w') as f:
             f.write(image_path)
         return image_path
 
 
     def get_depth(self, folder):
-        image_path = os.path.join(self.data_path, 'train-depth-map', folder)
+        depth_path = os.path.join(self.data_path, 'train-depth-map', folder + '.png')
         with open('/home/herlevi/monodepth2/debugs/debug_get_image_path_depth.txt', 'w') as f:
-            f.write(image_path)
-        return image_path
+            f.write(depth_path)
         
+        depth_gt = pil.open(depth_path)
+        depth_gt = depth_gt.resize(self.full_res_shape, pil.NEAREST)
+        depth_gt = np.array(depth_gt).astype(np.float32) / 256
+
+        return depth_gt        
 
     def get_color(self, folder, frame_index, do_flip):
         color = self.loader(self.get_image_path(folder))
@@ -62,6 +66,7 @@ class DrivingStereoDataset(MonoDataset):
 
         return color
     
+    '''
     def check_depth(self):
         line = self.filenames[0].split()
         scene_name = line[0]
@@ -73,6 +78,7 @@ class DrivingStereoDataset(MonoDataset):
             "velodyne_points/data/{:010d}.bin".format(int(frame_index)))
 
         return os.path.isfile(velo_filename)
+    '''
     
     def get_Cut_Flip(image):
         p = np.random.random()
