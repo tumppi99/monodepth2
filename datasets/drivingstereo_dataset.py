@@ -23,22 +23,27 @@ class DrivingStereoDataset(MonoDataset):
         # by 1 / image_height. Monodepth2 assumes a principal point to be exactly centered.
         # If your principal point is far from the center you might need to disable the horizontal
         # flip augmentation.
-        self.K = np.array([[2.34, 0, 0.5, 0],
-                           [0, 5.15, 0.5, 0],
-                           [0, 0, 1, 0],
-                           [0, 0, 0, 1]], dtype=np.float32) #ei tietoa parametreista
 
-        self.full_res_shape = (864, 384)
-        self.side_map = {"2": 2, "3": 3, "l": 2, "r": 3} #tarviiko?
-
-        '''
+        
         # Camera intrinsics
         # 15mm images have different focals
         self.c_u = 4.556890e+2
         self.c_v = 1.976634e+2
         self.f_u = 1.003556e+3
         self.f_v = 1.003556e+3
-        '''
+
+        image_width = 864
+        image_height = 384
+        
+
+        self.K = np.array([[self.f_u / image_width, 0, 0.5, 0],
+                           [0, self.f_v / image_height, 0.5, 0],
+                           [0, 0, 1, 0],
+                           [0, 0, 0, 1]], dtype=np.float32) #ei tietoa parametreista
+
+        self.full_res_shape = (864, 384)
+        self.side_map = {"2": 2, "3": 3, "l": 2, "r": 3} #tarviiko?
+
     
     def get_image_path(self, folder):
         image_path = os.path.join(self.data_path, 'train-left-image', folder + '.jpg')
