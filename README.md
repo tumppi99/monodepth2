@@ -1,3 +1,44 @@
+Contribution Overview. Highlight the changes you have made to existing work. Justify the
+reasons behind these changes (What do you want to improve? and How?). It’s better to use
+visuals to guide the reader to understand your work.
+
+• Experimental Setup. What are the experiments you conducted? What are the evaluation
+metrics?
+
+Our goal was to perform two experiments: implementing a new dataset and using a state-of-the-art data augmentation technique. The dataset was chosen to be DrivingStereo. In our project, the focus was to use it only for Monocular Depth Estimation. The data augmentation method was chosen to be CutFlip introduced in Monocular Depth Estimation by https://github.com/ShuweiShao/URCDC-Depth. We started with https://github.com/zxcqlf/MonoViT as our backbone code but couldn't get it working so we had to switch to https://github.com/nianticlabs/monodepth2 which has been previously used as a backbone. We did our implementations to that code.
+
+• Description of the dataset + label format + where/how to acquire it. What data do I need
+to train your model? How do I get it? In what shape?
+
+Our dataset is called DrivingStereo. It can be found online from https://drivingstereo-dataset.github.io/. It is a "A Large-Scale Dataset for Stereo Matching in Autonomous Driving Scenarios". We used the dataset by accessing it through SCITAS.
+
+Additional information about the dataset: "Google Drive and Baidu Cloud links are available for the downloading of left images, right images, disparity maps, and depth maps. The total number of our dataset is 182188, where the training set has 174437 pairs and the testing set has 7751 pairs. For convenience, we compress the images by sequences. Different from the original resolution reported in the paper, all of the images and maps are downsampled to the half resolution. The average size of image is 881x400. In addition to the sequential training data, we also select 2000 frames with 4 different weathers (sunny, cloudy, foggy, rainy) for specific requests."
+
+• A dataset class script: “dataset.py”
+• A training script: “train.py”
+• An inference script: “inference.py”
+
+• Results section. Qualitative and Quantitative results of your experiments.
+
+kuva CutFlipista...
+
+• Short Conclusion.
+
+We partially achieved our goal. We succeeded 
+
+<p align="center">
+  <img src="assets/CutFlip.jpg" alt="CutFlip example image"/>
+</p>
+
+<p align="center">
+  <img src="assets/depth_map_image.jpg" alt="Depth map example image"/>
+</p>
+
+• Whatever else you think is necessary
+
+kootut selitykset?
+
+
 # Monodepth2
 
 This is the reference PyTorch implementation for training and testing depth estimation models using the method described in
