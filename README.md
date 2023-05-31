@@ -10,9 +10,11 @@ Our goal was to perform two experiments: implementing a new dataset and using a 
 • Description of the dataset + label format + where/how to acquire it. What data do I need
 to train your model? How do I get it? In what shape?
 
-Our dataset is called DrivingStereo. It can be found online from https://drivingstereo-dataset.github.io/. It is a "A Large-Scale Dataset for Stereo Matching in Autonomous Driving Scenarios". We used the dataset by accessing it through SCITAS.
+Our dataset is called DrivingStereo. It is a "A Large-Scale Dataset for Stereo Matching in Autonomous Driving Scenarios". It can be found online from https://drivingstereo-dataset.github.io/. You can download the images to your computer if you have an enormous amount of space. We used the dataset by accessing it through SCITAS. The training images are in form of .jpg and depth map images in form of .png. We tried to use left training images to train our model.
 
 Additional information about the dataset: "Google Drive and Baidu Cloud links are available for the downloading of left images, right images, disparity maps, and depth maps. The total number of our dataset is 182188, where the training set has 174437 pairs and the testing set has 7751 pairs. For convenience, we compress the images by sequences. Different from the original resolution reported in the paper, all of the images and maps are downsampled to the half resolution. The average size of image is 881x400. In addition to the sequential training data, we also select 2000 frames with 4 different weathers (sunny, cloudy, foggy, rainy) for specific requests."
+
+
 
 • A dataset class script: “dataset.py”
 • A training script: “train.py”
@@ -22,17 +24,18 @@ Additional information about the dataset: "Google Drive and Baidu Cloud links ar
 
 kuva CutFlipista...
 
+<p align="center">
+  <img src="assets/CutFlip_image.jpg" alt="CutFlip example image" width="800"/>
+</p>
+
+<p align="center">
+  <img src="assets/depth_map_image.jpg" alt="Depth map example image" width="800"/>
+</p>
+
 • Short Conclusion.
 
-We partially achieved our goal. We succeeded 
+We partially achieved our goal. We succeeded in implementing our data augmentation method. Training of our model didn't work out as we wanted. Close to the end of the project, we could identify some reasons why we didn't succeed as planned.
 
-<p align="center">
-  <img src="assets/CutFlip.jpg" alt="CutFlip example image"/>
-</p>
-
-<p align="center">
-  <img src="assets/depth_map_image.jpg" alt="Depth map example image"/>
-</p>
 
 • Whatever else you think is necessary
 
