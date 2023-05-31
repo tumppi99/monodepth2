@@ -17,10 +17,29 @@ import torch.utils.data as data
 from torchvision import transforms
 
 
-def pil_loader(self,path):
+def pil_loader(path):
+
+    # set the directory path
+    dir_path = '/work/scitas-share/datasets/Vita/civil-459/DrivingStereo/train/train-left-image'
+
+    # create a dictionary to store the mapping
+    mapping = {}
+
+    # Iterate over all the entries
+    for index, filename in enumerate(os.listdir(dir_path)):
+        # construct new name using index as frame number
+        new_filename = f"2011_09_26/2011_09_26_drive_0022_sync {index} l.jpg"
+        # store the mapping
+        mapping[new_filename] = filename
+        for i, (key, value) in enumerate(mapping.items()):
+            if i >= 10:
+                break
+            print(f'{key}: {value}')
+
+
 
     # get the original filename from the mapping
-    original_filename = self.mapping[path]
+    original_filename = mapping[path]
     # use original_filename to load the image
     image_path = os.path.join("/work/scitas-share/datasets/Vita/civil-459/DrivingStereo/train/train-left-image", original_filename)
     # open path as file to avoid ResourceWarning

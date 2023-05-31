@@ -110,23 +110,6 @@ class Trainer:
         print("Models and tensorboard events files are saved to:\n  ", self.opt.log_dir)
         print("Training is using:\n  ", self.device)
 
-        # set the directory path
-        dir_path = '/work/scitas-share/datasets/Vita/civil-459/DrivingStereo/train/train-left-image'
-
-        # create a dictionary to store the mapping
-        self.mapping = {}
-
-        # Iterate over all the entries
-        for index, filename in enumerate(os.listdir(dir_path)):
-            # construct new name using index as frame number
-            new_filename = f"2011_09_26/2011_09_26_drive_0022_sync {index} l.png"
-            # store the mapping
-            self.mapping[new_filename] = filename
-
-
-
-
-
         # data
         datasets_dict = {"kitti": datasets.KITTIRAWDataset,
                          "kitti_odom": datasets.KITTIOdomDataset,
