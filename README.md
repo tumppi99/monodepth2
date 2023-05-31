@@ -1,10 +1,7 @@
-Contribution Overview. Highlight the changes you have made to existing work. Justify the
-reasons behind these changes (What do you want to improve? and How?). It’s better to use
-visuals to guide the reader to understand your work.
-
+## 🦾 Motivation
+This is the project work of group 16 for the EPFL course "Deep learning for autonomous vehicles". Our goal was to perform two experiments: implementing a new dataset and using a state-of-the-art data augmentation technique. The dataset was chosen to be DrivingStereo, since it has never been implemented before on Monocular Camera Depth Estimation. It also has a larger amount of data to train and test than multiple other datasets, and it contains frames from different weather conditions. In our project, the focus was to use it only for Monocular Depth Estimation, even though it is primarily used for stereo images. The data augmentation method was chosen to be CutFlip introduced in Monocular Depth Estimation by [URCDC-Depth](https://github.com/ShuweiShao/URCDC-Depth). The choice for CutFlip was based on it being part of a state-of-the-art work and computationally light, which is necessary for these kinds of projects.
 
 ## ⚙️ Setup
-
 Assuming a fresh Anaconda or Venv distribution, you can install the dependencies with:
 ```shell
 pip3 install torch==1.9.0 torchvision==0.10.0 torchaudio==0.9.0
@@ -15,51 +12,47 @@ pip install timm einops IPython
 ```
 We ran our experiments with PyTorch 1.9.0, CUDA 11.1.1 and Python 3.7.7.
 
-
 ## 💻 Experiments
-
-• Experimental Setup. What are the experiments you conducted? What are the evaluation
-metrics?
-
-Our goal was to perform two experiments: implementing a new dataset and using a state-of-the-art data augmentation technique. The dataset was chosen to be DrivingStereo. In our project, the focus was to use it only for Monocular Depth Estimation. The data augmentation method was chosen to be CutFlip introduced in Monocular Depth Estimation by [URCDC-Depth](https://github.com/ShuweiShao/URCDC-Depth). We started with [MonoViT](https://github.com/zxcqlf/MonoViT) as our backbone code but couldn't get it working so we had to switch to [Monodepth2](https://github.com/nianticlabs/monodepth2) which has been previously used as a backbone. We did our implementations to that code.
-
+We started with [MonoViT](https://github.com/zxcqlf/MonoViT) as our backbone code but couldn't get it working so we had to switch to [Monodepth2](https://github.com/nianticlabs/monodepth2) which has been previously used as a backbone. We did our implementations to that code. For the evaluation metrics we would have used Abs Rel, Sq Rel, RMSE, RMSE log, delta < 1.25, delta < 1.25^2, and delta < 1.25^3.
 
 ## 💾 DrivingStereo dataset
-
-• Description of the dataset + label format + where/how to acquire it. What data do I need
-to train your model? How do I get it? In what shape?
-
-Our dataset is called DrivingStereo. It is a "A Large-Scale Dataset for Stereo Matching in Autonomous Driving Scenarios". It can be found online from [DrivingStereo](https://drivingstereo-dataset.github.io/). You can download the images to your computer if you have an enormous amount of space. We used the dataset by accessing it through SCITAS. The training images are in form of .jpg and depth map images in form of .png. We tried to use left training images to train our model. Evaluation data was created by taking 20,000 frames from training data.
+Our dataset is called DrivingStereo. It is a "A Large-Scale Dataset for Stereo Matching in Autonomous Driving Scenarios". It can be found online from [DrivingStereo](https://drivingstereo-dataset.github.io/). You can download the images to your computer if you have an enormous amount of space. We used the dataset by accessing it via clusters located in SCITAS. The training images are in form of .jpg and depth map images in form of .png. We tried to use left training images to train our model. Evaluation data was created by taking 20,000 frames from training data.
 
 Additional information about the dataset: "Google Drive and Baidu Cloud links are available for the downloading of left images, right images, disparity maps, and depth maps. The total number of our dataset is 182188, where the training set has 174437 pairs and the testing set has 7751 pairs. For convenience, we compress the images by sequences. Different from the original resolution reported in the paper, all of the images and maps are downsampled to the half resolution. The average size of image is 881x400. In addition to the sequential training data, we also select 2000 frames with 4 different weathers (sunny, cloudy, foggy, rainy) for specific requests."
 
+## 🧪 Testing
+To test the training of the model with slurm, type the command:
+```shell
+Sinteract -g gpu:1 -p gpu -c 12 -m 16G -t 00:20:00
+python train.py
+```
+For running the code via the clusters, use the following commands (even though the code is not working correctly):
+```shell
+sbatch script
+```
+CutFlip_tester.py can be used to test the CutFlip functionality after having selected a path for your input image. It can be ran locally or in a venv. Weigths are automatically downloaded when running the code so no worries about that.
 
 ## 🖼️ Results
-• Results section. Qualitative and Quantitative results of your experiments.
-
-We got the data augmentation method working as we wanted to. Below you will find an image that is modified with CutFlip from an input image. The CutFlip function takes in whatever image it is given to to generate cutting and flipping features. The vertical location of the horizontal cut is randomized. Also, CutFlip is randomly assigned to only some of the frames for better generalization.
+We got the data augmentation method working as we wanted to. Below you will find an image that is modified with CutFlip method from an input image. The CutFlip function takes in whatever image it is given to generate cutting and flipping features. The vertical location of the horizontal cut is randomized. Also, CutFlip is randomly assigned to only some of the frames for better generalization.
 
 <p align="center">
   <img src="assets/CutFlip_image.jpg" alt="CutFlip example image" width="800"/>
 </p>
 
-Our code was able to get images from the large dataset. Below you will find an example of the kind of depth maps the dataset contains.
+Our code was able to get images from the DrivingStereo dataset. Below you will find an example of the kind of depth maps the dataset contains.
 
 <p align="center">
   <img src="assets/depth_map_image.jpg" alt="Depth map example image" width="800"/>
 </p>
 
+To our knowledge we achieved to produce most of the main functions for implementing the DrivingStereo dataset. We managed to print out running updates about training with some information missing e.g., correct calculation of the loss.
 
-## 🤷‍♂️🤷 Conclusion
-
-We partially achieved our goal. We succeeded in implementing our data augmentation method. Training of our model didn't work out as we wanted. Close to the end of the project, we could identify some reasons why we didn't succeed as planned. Reading and processing of the folders and files were dificult to adapt due to different structures of KITTI and DrivingStereo datasets. Modifications would have been large and time-consuming for getting everything work as expected. The complicated structure of the backbone wasn't helping in that matter. To best of our knowledge, no other work had implemented this dataset for training in Monocular Camera Depth Estimation and only one that had implemented it for training in general. With some more time we could have overcome these issues.
-
+## 🤷‍♂️ Conclusion
+We partially achieved our goal. We succeeded in implementing our data augmentation method. Training of our model didn't work out as we wanted. Close to the end of the project, we could identify some reasons why we didn't succeed as planned. Reading and processing of the folders and files were dificult to adapt due to different structures of KITTI and DrivingStereo datasets. Modifications we already made were broad and located in multiple files due to complex data structure. To best of our knowledge, no other work had implemented this dataset for training in Monocular Camera Depth Estimation, and only one had implemented it for training in general. With some more time we could have overcome these issues.
 
 ## ⚠️ Info
+Due to not being able to train the code properly, we didn´t find it useful or necessary to submit an interefence script.
 
-• Whatever else you think is necessary
-
-We didn't submit an inference script since we didn't have any results to present. We couldn't train the model so it seemed unnecessary. 
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
