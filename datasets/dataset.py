@@ -51,9 +51,12 @@ class DrivingStereoDataset(MonoDataset):
         # In our case "folder" contains names of picture frames without the filetype at the end (".jpg" or ".png")
         # That is why the type is added at the end. Also, we specify that we want left training images
         # Reading of the folders and files were dificult to adapt due to different structures of KITTI and DrivingStereo datasets
-        with open('/home/herlevi/monodepth2/debugs/debug_get_image_path.txt', 'w') as f:
-            # Check that the folder path is correct
+        
+        '''
+        # Check that the folder path is correct
+        with open('/home/<user>/monodepth2/debugs/debug_get_image_path.txt', 'w') as f:
             f.write(image_path)
+        '''
             
         return image_path
 
@@ -65,9 +68,12 @@ class DrivingStereoDataset(MonoDataset):
         # In our case "folder" contains names of picture frames without the filetype at the end (".jpg" or ".png")
         # That is why the type is added at the end. Also, we specify that we want depth map images
         # Reading of the folders and files were dificult to adapt due to different structures of KITTI and DrivingStereo datasets
-        with open('/home/herlevi/monodepth2/debugs/debug_get_image_path_depth.txt', 'w') as f:
-            # Check that the folder path is correct
+        
+        '''
+        # Check that the folder path is correct
+        with open('/home/<user>/monodepth2/debugs/debug_get_image_path_depth.txt', 'w') as f:
             f.write(depth_path)
+        '''
         
         depth_gt = pil.open(depth_path)
         depth_gt = depth_gt.resize(self.full_res_shape, pil.NEAREST)

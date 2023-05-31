@@ -6,12 +6,12 @@ import PIL.Image as pil
 import random
 import copy
 
-from datasets.drivingstereo_dataset import DrivingStereoDataset
+from datasets.dataset import DrivingStereoDataset
 
 # Load the image
 # Update the path below to match the image you want on your system
 # This was successfully used to access images on DrivingStereo dataset
-image_path = '/monodepth2/assets/test_image.jpg'
+image_path = '/assets/test_image.jpg'
 image = pil.open(image_path).convert('RGB')
 
 # Apply the Cut_Flip function
@@ -29,8 +29,8 @@ ax[1].set_title('Augmented Image')
 # Plotting the images didn't work in SCITAS environment so an option for saving them was added
 
 # Save the original and augmented images
-original_image_path = '/monodepth2/assets/original_image.jpg'   # Update the path below to match the location you want on your system
-augmented_image_path = '/monodepth2/assets/augmented_image.jpg' # Update the path below to match the location you want on your system
+original_image_path = '/assets/original_image.jpg'   # Update the path below to match the location you want on your system
+augmented_image_path = '/assets/augmented_image.jpg' # Update the path below to match the location you want on your system
 
 image.save(original_image_path)
 augmented_image.save(augmented_image_path)
