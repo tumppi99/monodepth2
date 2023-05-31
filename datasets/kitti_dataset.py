@@ -54,7 +54,9 @@ class KITTIDataset(MonoDataset):
             color = color.transpose(pil.FLIP_LEFT_RIGHT)
 
         return color
+    
 #----------------------------------------------------------------------------------------------------------------
+# CutFlip data augmentation method first implemented here before adding it to drivingstereo_dataset.py
 
     def get_Cut_Flip(image):
         p = np.random.random()

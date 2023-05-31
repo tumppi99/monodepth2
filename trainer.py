@@ -113,7 +113,7 @@ class Trainer:
         # data
         datasets_dict = {"kitti": datasets.KITTIRAWDataset,
                          "kitti_odom": datasets.KITTIOdomDataset,
-                         "DrivingStereo": datasets.DrivingStereoDataset}
+                         "DrivingStereo": datasets.DrivingStereoDataset}    # Added DrivingStereo as an option
         self.dataset = datasets_dict[self.opt.dataset]
 
         fpath = os.path.join(os.path.dirname(__file__), "splits", self.opt.split, "{}_files.txt")
@@ -208,6 +208,8 @@ class Trainer:
             losses["loss"].backward()
             self.model_optimizer.step()
             self.model_lr_scheduler.step()
+            
+            # Learning rate scheduling relocated after clearing gradients, backpropagation, and updating weights as it should be in this PyTorch version
 
             duration = time.time() - before_op_time
 
@@ -349,7 +351,7 @@ class Trainer:
                 source_scale = scale
             else:
                 disp = F.interpolate(
-                    disp, [self.opt.height, self.opt.width], mode="bilinear", align_corners=True)
+                    disp, [self.opt.height, self.opt.width], mode="bilinear", align_corners=False)
                 source_scale = 0
 
             _, depth = disp_to_depth(disp, self.opt.min_depth, self.opt.max_depth)
@@ -451,7 +453,7 @@ class Trainer:
                 if not self.opt.v1_multiscale:
                     mask = F.interpolate(
                         mask, [self.opt.height, self.opt.width],
-                        mode="bilinear", align_corners=True)
+                        mode="bilinear", align_corners=False)
 
                 reprojection_losses *= mask
 
@@ -504,7 +506,7 @@ class Trainer:
         """
         depth_pred = outputs[("depth", 0, 0)]
         depth_pred = torch.clamp(F.interpolate(
-            depth_pred, [384, 864], mode="bilinear", align_corners=True), 1e-3, 80)
+            depth_pred, [384, 864], mode="bilinear", align_corners=False), 1e-3, 80)
         depth_pred = depth_pred.detach()
 
         depth_gt = inputs["depth_gt"]

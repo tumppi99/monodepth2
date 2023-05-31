@@ -25,6 +25,9 @@ def pil_loader(path):
             return img.convert('RGB')
         
 '''
+
+Added different possible options for data loading
+
 def load_path(self, list_filename):
     lines = read_all_lines(list_filename)
     splits = [line.split() for line in lines]
@@ -73,7 +76,7 @@ class MonoDataset(data.Dataset):
         self.num_scales = num_scales
         self.interp = Image.ANTIALIAS
 
-        # default [0, -1, 1]
+        # default [0, -1, 1], Added comment for better understanding
         self.frame_idxs = frame_idxs
 
         self.is_train = is_train
@@ -90,7 +93,7 @@ class MonoDataset(data.Dataset):
             self.contrast = (0.8, 1.2)
             self.saturation = (0.8, 1.2)
             self.hue = (-0.1, 0.1)
-            # ColotJitter .get_params kanssa tai ilman
+            # .get_params ending deleted from ColotJitter for PyTorch version compatibility
             transforms.ColorJitter(
                 self.brightness, self.contrast, self.saturation, self.hue)
         except TypeError:
@@ -105,7 +108,7 @@ class MonoDataset(data.Dataset):
             self.resize[i] = transforms.Resize((self.height // s, self.width // s),
                                                interpolation=self.interp)
 
-        #self.load_depth = self.check_depth()   ei ehkä tarvita
+        #self.load_depth = self.check_depth()   Commented out due to different way of getting depth in DrivingStereo
 
     def preprocess(self, inputs, color_aug):
         """Resize colour images to the required scales and augment if required
@@ -156,18 +159,6 @@ class MonoDataset(data.Dataset):
             3       images resized to (self.width // 8, self.height // 8)
         """
 
-        '''
-        left_img = self.load_image(os.path.join(
-            self.datapath, self.left_filenames[index]))
-        right_img = self.load_image(os.path.join(
-            self.datapath, self.right_filenames[index]))
-        disparity = self.load_disp(os.path.join(
-            self.datapath, self.disp_filenames[index]))
-
-        w, h = left_img.size
-        crop_w, crop_h = 880, 400
-        '''
-
         inputs = {}
 
         do_color_aug = self.is_train and random.random() > 0.5
@@ -175,7 +166,7 @@ class MonoDataset(data.Dataset):
         
         line = self.filenames[index].split()
         
-        # ex: 2011_09_26/2011_09_26_drive_0022_sync
+        # ex: 2011_09_26/2011_09_26_drive_0022_sync, Added comment for better understanding
         folder = line[0]
 
         if len(line) == 3:
@@ -184,7 +175,7 @@ class MonoDataset(data.Dataset):
             frame_index = 0
 
         if len(line) == 3:
-            side = line[2]  # r or l, voi vaatia muokkausta
+            side = line[2]
         else:
             side = None
 
@@ -192,8 +183,9 @@ class MonoDataset(data.Dataset):
             if i == "s":
                 other_side = {"r": "l", "l": "r"}[side]
                 inputs[("color", i, -1)] = self.get_color(folder, frame_index, do_flip)
+
 #----------------------------------------------------------------------------------------------------------------
-                self.get_Cut_Flip(Image) #image should be changed to the frames
+                self.get_Cut_Flip(Image)    #image should be changed to the frames
 #----------------------------------------------------------------------------------------------------------------
 
             else:
@@ -208,12 +200,12 @@ class MonoDataset(data.Dataset):
 
             inv_K = np.linalg.pinv(K)
 
-            # add intrinsics to inputs
+            # add intrinsics to inputs, Added comment for better understanding
             inputs[("K", scale)] = torch.from_numpy(K)
             inputs[("inv_K", scale)] = torch.from_numpy(inv_K)
 
         if do_color_aug:
-            # ColotJitter .get_params kanssa tai ilman
+            # .get_params ending deleted from ColotJitter for PyTorch version compatibility
             color_aug = transforms.ColorJitter(
                 self.brightness, self.contrast, self.saturation, self.hue)
         else:
@@ -239,8 +231,9 @@ class MonoDataset(data.Dataset):
             inputs["stereo_T"] = torch.from_numpy(stereo_T)
 
         return inputs
+    
 #----------------------------------------------------------------------------------------------------------------
-    #image should be changed to similar things as the following functions
+    # Gives an error is function is not implemented in the code
     def get_Cut_Flip(self, image):
         raise NotImplementedError
 #----------------------------------------------------------------------------------------------------------------
@@ -255,7 +248,7 @@ class MonoDataset(data.Dataset):
         raise NotImplementedError
     
     '''
-    Jos halutaan päivittää matriisin arvoja...
+    Added for possible updating of intrinsics matrix
 
     def load_intrinsics(self, token):
         """Returns a 4x4 camera intrinsics matrix corresponding to the token

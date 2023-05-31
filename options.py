@@ -21,6 +21,7 @@ class MonodepthOptions:
                                  type=str,
                                  help="path to the training data",
                                  default=os.path.join("/work/scitas-share/datasets/Vita/civil-459/DrivingStereo/train"))
+        # added path to dataset location in SCITAS
         self.parser.add_argument("--log_dir",
                                  type=str,
                                  help="log directory",
@@ -36,6 +37,10 @@ class MonodepthOptions:
                                  help="which training split to use",
                                  choices=["eigen_zhou", "eigen_full", "odom", "benchmark", "DS_left"],
                                  default="DS_left")
+        # DrivingStereo left (DS_left) images added as a choice and as the default split
+        # Splits can be found in "splits" folder and they contain train and val text files
+        # In our case, the text files contain names of picture frames without the filetype at the end (".jpg" or ".png")
+        # Valuation data was created by taking 20,000 frames from training data
         self.parser.add_argument("--num_layers",
                                  type=int,
                                  help="number of resnet layers",
@@ -46,17 +51,20 @@ class MonodepthOptions:
                                  help="dataset to train on",
                                  default="DrivingStereo",
                                  choices=["kitti", "kitti_odom", "kitti_depth", "kitti_test", "DrivingStereo"])
+        # DrivingStereo added as a dataset option and as the default one
         self.parser.add_argument("--png",
                                  help="if set, trains from raw KITTI png files (instead of jpgs)",
                                  action="store_true")
         self.parser.add_argument("--height",
                                  type=int,
                                  help="input image height",
-                                 default=384) #muutettu 32:lla jaolliseksi
+                                 default=384)
+        # Image size modified for our dataset
         self.parser.add_argument("--width",
                                  type=int,
                                  help="input image width",
-                                 default=864) #muutettu 32:lla jaolliseksi
+                                 default=864)
+        # Image size modified for our dataset
         self.parser.add_argument("--disparity_smoothness",
                                  type=float,
                                  help="disparity smoothness weight",
@@ -87,7 +95,8 @@ class MonodepthOptions:
         self.parser.add_argument("--batch_size",
                                  type=int,
                                  help="batch size",
-                                 default=1) # vaihda tätä tarvittaessa, alkup. 12
+                                 default=1)
+        # Modified batch size to test training, originally 12
         self.parser.add_argument("--learning_rate",
                                  type=float,
                                  help="learning rate",
@@ -95,7 +104,8 @@ class MonodepthOptions:
         self.parser.add_argument("--num_epochs",
                                  type=int,
                                  help="number of epochs",
-                                 default=1) # vaihda tätä tarvittaessa, alkup. 20
+                                 default=1)
+        # Modified epoch value to test training, originally 20
         self.parser.add_argument("--scheduler_step_size",
                                  type=int,
                                  help="step size of the scheduler",
@@ -205,16 +215,5 @@ class MonodepthOptions:
 
     def parse(self):
         self.options = self.parser.parse_args()
-
-        '''
-        Otettu nuscenes_cityscapes
-
-        self.options.file_dir = file_dir
-        self.options.data_path = os.path.abspath(
-                os.path.expanduser(self.options.data_path)
-                )
-        if not os.path.exists(self.options.log_dir):
-            os.mkdir(self.options.log_dir)
-        '''
 
         return self.options
