@@ -17,10 +17,15 @@ import torch.utils.data as data
 from torchvision import transforms
 
 
-def pil_loader(path):
+def pil_loader(self,path):
+
+    # get the original filename from the mapping
+    original_filename = self.mapping[path]
+    # use original_filename to load the image
+    image_path = os.path.join("/work/scitas-share/datasets/Vita/civil-459/DrivingStereo/train/train-left-image", original_filename)
     # open path as file to avoid ResourceWarning
     # (https://github.com/python-pillow/Pillow/issues/835)
-    with open(path, 'rb') as f:
+    with open(image_path, 'rb') as f:
         with Image.open(f) as img:
             return img.convert('RGB')
         
